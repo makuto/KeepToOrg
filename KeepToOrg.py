@@ -198,7 +198,7 @@ def main(keepHtmlDir, outputDir):
         # TODO: Make sure tags are filename-safe
         outFileName = '{}/{}.org'.format(outputDir, makeSafeFilename(tag))
 
-        notesSortedByDate = sorted(group, key=lambda note: note.date)
+        notesSortedByDate = sorted(group, key=lambda note: str(note.date))
         # If capture etc. appends, we should probably follow that same logic (don't reverse)
         # notesSortedByDate.reverse()
 
