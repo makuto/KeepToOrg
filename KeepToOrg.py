@@ -36,7 +36,8 @@ class Note:
         self.body = ''
         self.tags = []
         self.archived = False
-        self.date = ''
+        # If no date can be parsed, set it to Jan 1, 2000
+        self.date = datetime.datetime(2000, 1, 1)
 
     def toOrgString(self):
         # status = '(archived) ' if self.archived else ''
@@ -144,7 +145,6 @@ def main(keepHtmlDir, outputDir):
                 if '<span class="archived" title="Note archived">' in line:
                     note.archived = True
                     
-                # Parse date (for sorting)
                 # Parse title
                 title, isMatch = getHtmlValueIfMatches(line, '<div class="title">', '</div>')
                 if isMatch:
@@ -195,7 +195,6 @@ def main(keepHtmlDir, outputDir):
     # We've parsed all the notes; write out the groups to separate .org files
     numNotesWritten = 0
     for tag, group in noteGroups.items():
-        # TODO: Make sure tags are filename-safe
         outFileName = '{}/{}.org'.format(outputDir, makeSafeFilename(tag))
 
         notesSortedByDate = sorted(group, key=lambda note: note.date)
