@@ -88,9 +88,9 @@ class Note:
             if body and not len(self.tags):
                 return '*{} {}\n{}'.format(nesting, orgTitle, body)
             if not body and len(self.tags):
-                return '*{} {}\n{}'.format(nesting, orgTitle, tagsToOrgString(self.tags))
+                return '*{} {} {}\n'.format(nesting, orgTitle, tagsToOrgString(self.tags))
             else:
-                return "*{} {}\n{}\n{}".format(nesting, orgTitle, body, tagsToOrgString(self.tags))
+                return "*{} {} {}\n{}\n".format(nesting, orgTitle, body, tagsToOrgString(self.tags))
         # If no body nor tags, note should be a single line
         else:
             return '*{} {}'.format(nesting, orgTitle)
