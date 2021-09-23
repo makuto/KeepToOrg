@@ -84,16 +84,17 @@ class Note:
 
         nesting = '*' if self.archived else ''
         # Various levels of information require different formats
+        created = self.date.strftime(":PROPERTIES:\n:CREATED:  [%Y-%m-%d %a %H:%M]\n:END:")
         if body or len(self.tags):
             if body and not len(self.tags):
-                return '*{} {}\n{}'.format(nesting, orgTitle, body)
+                return '*{} {}\n{}\n{}'.format(nesting, orgTitle, created, body)
             if not body and len(self.tags):
-                return '*{} {} {}\n'.format(nesting, orgTitle, tagsToOrgString(self.tags))
+                return '*{} {} {}\n{}\n'.format(nesting, orgTitle, tagsToOrgString(self.tags), created)
             else:
-                return "*{} {} {}\n{}\n".format(nesting, orgTitle, body, tagsToOrgString(self.tags))
+                return "*{} {} {}\n{}\n{}\n".format(nesting, orgTitle, body, tagsToOrgString(self.tags), created)
         # If no body nor tags, note should be a single line
         else:
-            return '*{} {}'.format(nesting, orgTitle)
+            return '*{} {}\n{}'.format(nesting, orgTitle, created)
 
 def getAllNoteHtmlFiles(htmlDir):
     print('Looking for notes in {}'.format(htmlDir))
@@ -156,7 +157,6 @@ def main(keepHtmlDir, outputDir):
 
                     # This isn't great; for same-line bodies, strip opening div
                     line = line.replace('<div class="content">', '')
-
                 # Parse the date
                 if ' AM</div>' in line or ' PM</div>' in line:
                     dateString = line.replace('</div>', '').strip()
